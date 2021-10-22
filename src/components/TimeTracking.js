@@ -16,17 +16,7 @@ TimeTracking.prototype.get_time_entries_within_date_range = function (params) {
 	return new Promise(async function (resolve, reject) {
 		try {
 			let param = genParams(params, ["team_id"]);
-			// JPF - mod 2021-09-27
-			// console.log(`TimeTracking: ${param}`);
-			//  var res = await Requests.https_clickupapi_get(`/api/v2/team/${params.team_id}/time_entries?${params.length > 1 ? param : ""}`, token);
-			// Replace the use of the params string as it was not removing the team id
-			// from the params object and as a result only returing 4 items
-			// taking the parameters from the object directly solved this issue
-			//
-			var res = await Requests.https_clickupapi_get(
-				`/api/v2/team/${params.team_id}/time_entries?start_date=${params.start_date}&end_date=${params.end_date}`,
-				token
-			);
+			var res = await Requests.https_clickupapi_get(`/api/v2/team/${params.team_id}/time_entries?${param.length > 1 ? param : ""}`, token);
 			resolve(res);
 		} catch (err) {
 			reject(err);

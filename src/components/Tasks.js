@@ -3,7 +3,7 @@ const genParams = require("../utils/params");
 
 var Tasks = function (token) {
 	this.token = token;
-}
+};
 /**
  * Create a Task
  * @param {String} list_id List ID where task be created
@@ -13,44 +13,55 @@ Tasks.prototype.create_task = function (list_id, data) {
 	token = this.token;
 	return new Promise(async function (resolve, reject) {
 		try {
-			var res = await Requests.https_clickupapi_post(`/api/v2/list/${list_id}/task`, data, token);
+			var res = await Requests.https_clickupapi_post(
+				`/api/v2/list/${list_id}/task`,
+				data,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
+};
 /**
  * Update a Task
  * @param {String} task_id Task ID to be updated
  * @param {JSON} data Body request for update
  */
 Tasks.prototype.update_task = function (task_id, data) {
-	token = this.token
+	token = this.token;
 	return new Promise(async function (resolve, reject) {
 		try {
-			var res = await Requests.https_clickupapi_put(`/api/v2/task/${task_id}`, data, token);
+			var res = await Requests.https_clickupapi_put(
+				`/api/v2/task/${task_id}`,
+				data,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
+};
 /**
  * Delete a Task
  * @param {String} task_id Task ID to be deleted
  */
 Tasks.prototype.delete_task = function (task_id) {
-	token = this.token
+	token = this.token;
 	return new Promise(async function (resolve, reject) {
 		try {
-			var res = await Requests.https_clickupapi_delete(`/api/v2/task/${task_id}`, token);
+			var res = await Requests.https_clickupapi_delete(
+				`/api/v2/task/${task_id}`,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
+};
 /**
  * Get info about a Task
  * @param {String} task_id Task ID
@@ -60,13 +71,18 @@ Tasks.prototype.get_task = function (params) {
 	return new Promise(async function (resolve, reject) {
 		try {
 			let param = genParams(params, ["task_id"]);
-			var res = await Requests.https_clickupapi_get(`/api/v2/task/${params.task_id}/?${params.length > 1 ? param : ""}`, token);
+			var res = await Requests.https_clickupapi_get(
+				`/api/v2/task/${params.task_id}/?${
+					param.length > 1 ? param : ""
+				}`,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
+};
 /**
  * Get Tasks
  * @param {JSON} params Request parameters in JSON format
@@ -75,31 +91,61 @@ Tasks.prototype.get_tasks = function (params) {
 	token = this.token;
 	return new Promise(async function (resolve, reject) {
 		try {
-			let param = genParams(params, ["list_id", "archived"]);
-			var res = await Requests.https_clickupapi_get(`/api/v2/list/${params.list_id}/task?${params.length > 1 ? param : ""}`, token);
+			let param = genParams(params, ["list_id", "archived", "subtasks"]);
+			var res = await Requests.https_clickupapi_get(
+				`/api/v2/list/${params.list_id}/task?${
+					param.length > 1 ? param : ""
+				}`,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
-
+};
+/**
+ * Get Tasks
+ * @param {JSON} params Request parameters in JSON format
+ */
+Tasks.prototype.get_tasks_and_subtasks = function (params) {
+	token = this.token;
+	return new Promise(async function (resolve, reject) {
+		try {
+			let param = genParams(params, ["list_id", "archived"]);
+			var res = await Requests.https_clickupapi_get(
+				`/api/v2/list/${params.list_id}/?subtasks=true&task?${
+					param.length > 1 ? param : ""
+				}`,
+				token
+			);
+			resolve(res);
+		} catch (err) {
+			reject(err);
+		}
+	});
+};
 /**
  * Get Filtered Team Tasks
  * @param {JSON} params Request parameters in JSON format
  */
-Tasks.prototype.get_filtered_team_tasks  = function (params) {
+Tasks.prototype.get_filtered_team_tasks = function (params) {
 	token = this.token;
 	return new Promise(async function (resolve, reject) {
 		try {
 			let param = genParams(params, ["team_Id", "page"]);
-			var res = await Requests.https_clickupapi_get(`/api/v2/team/${params.team_id}/task?${params.length > 1 ? param : ""}`, token);
+			var res = await Requests.https_clickupapi_get(
+				`/api/v2/team/${params.team_id}/task?${
+					param.length > 1 ? param : ""
+				}`,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
+};
 
 /**
  * Get Task's Time in Status
@@ -110,13 +156,18 @@ Tasks.prototype.get_tasks_time_in_status = function (params) {
 	return new Promise(async function (resolve, reject) {
 		try {
 			let param = genParams(params, ["task_id"]);
-			var res = await Requests.https_clickupapi_get(`/api/v2/task/${params.task_id}/time_in_status?${params.length > 1 ? param : ""}`, token);
+			var res = await Requests.https_clickupapi_get(
+				`/api/v2/task/${params.task_id}/time_in_status?${
+					param.length > 1 ? param : ""
+				}`,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
+};
 
 /**
  * Get Bulk Task's Time in Status
@@ -127,13 +178,18 @@ Tasks.prototype.get_bulk_tasks_time_in_status = function (params) {
 	return new Promise(async function (resolve, reject) {
 		try {
 			let param = genParams(params, ["task_ids"]);
-			var res = await Requests.https_clickupapi_get(`/api/v2/task/bulk_time_in_status/task_ids?${params.task_ids}&${params.length > 1 ? param : ""}`, token);
+			var res = await Requests.https_clickupapi_get(
+				`/api/v2/task/bulk_time_in_status/task_ids?${params.task_ids}&${
+					param.length > 1 ? param : ""
+				}`,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
+};
 
 /**
  * Get Tasks from a team
@@ -145,12 +201,15 @@ Tasks.prototype.get_team_tasks = function (params) {
 	return new Promise(async function (resolve, reject) {
 		try {
 			let param = genParams(params, ["list_id", "archived"]);
-			var res = await Requests.https_clickupapi_get(`/api/v2/team/${params.team_id}/task?${param}`, token);
+			var res = await Requests.https_clickupapi_get(
+				`/api/v2/team/${params.team_id}/task?${param}`,
+				token
+			);
 			resolve(res);
 		} catch (err) {
 			reject(err);
 		}
 	});
-}
+};
 
 module.exports = Tasks;
